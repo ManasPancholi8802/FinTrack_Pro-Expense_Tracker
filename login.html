@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinTrack Pro - Project</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body
+    style="
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    "
+  >
+    <div class="auth-card">
+      <h2>Welcome Back</h2>
+      <p>Login to FinTrack Pro</p>
+
+      <form class="inp-form" id="login-form">
+        <div class="form-group">
+          <label for="Username">Username</label>
+          <input required type="text" name="Username" id="login-username" />
+        </div>
+
+        <div class="form-group">
+          <label for="Password">Password</label>
+          <input required type="password" name="Password" id="login-password" />
+        </div>
+
+        <button id="loginBtn">Login</button>
+      </form>
+
+      <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </div>
+
+    <script>
+      const loginForm = document.querySelector("#login-form");
+      const form = document.querySelector("form");
+
+      // Retriving all data from local storage.
+      const registeredUsers = JSON.parse(localStorage.getItem("RegisteredUsers")) || [];
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        let username = event.target[0].value;
+        let password = event.target[1].value;
+
+        if (username.trim() === "" || password.trim() === "") {
+          alert("Please fill all the fields!");
+          return;
+        }
+
+        // Checking if user is Valid
+        const validUser = registeredUsers.find((elem) => elem.username === username && elem.password === password);
+        
+        if(validUser){
+          alert("Login Successfull!");
+          window.location.href = "index.html";
+          form.reset();
+        }else{
+          alert("Invalid Username or Password, please try again.");
+          return;
+        }
+      });   
+    </script>
+  </body>
+</html>
