@@ -1,3 +1,4 @@
+<!-- LOGIN Page -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -57,7 +58,6 @@
         const validUser = registeredUsers.find((elem) => elem.username === username && elem.password === password);
         
         if(validUser){
-          alert("Login Successfull!");
           window.location.href = "dashboard.html";
           form.reset();
         }else{
