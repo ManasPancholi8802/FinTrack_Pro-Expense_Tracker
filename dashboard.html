@@ -63,7 +63,7 @@
       <main>
         <header class="navBar">
           <div class="user-actions">
-            <span class="user-profile" id="navBar-user">Manas</span>
+            <span class="user-profile" id="navBar-user"></span>
             <button>
               <div>
                 <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" enable-background="new 0 0 52 52" xml:space="preserve">
@@ -82,7 +82,7 @@
           </div>
         </header>
 
-        <div id="dashboard-section" class="view-section active">
+        <div id="dashboard-section" class="view-section">
           <div class="page-header">
             <div>
               <h1>Financial Overview</h1>
@@ -162,22 +162,7 @@
                       </tr>
                     </thead>
 
-                    <tbody id="transactionTableBody">
-                      <tr>
-                        <td>2026-07-04</td>
-                        <td><strong>Salary</strong></td>
-                        <td><span class="tag">Salary</span></td>
-                        <td class="text-green">+$50000.00</td>
-                        <td>
-                          <button class="action-btn btn-edit">
-                            <img src="./icons/edit.png" alt="">
-                          </button>
-                          <button class="action-btn btn-delete">
-                            <img src="./icons/Delete.png" alt="">
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
+                    <tbody id="transactionTableBody"></tbody>
                   </table>
                 </div>
               </div>
@@ -252,33 +237,33 @@
       <div class="overlay-content">
         <div class="overlay-header">
           <h3>Add Transaction</h3>
-          <span>x</span>
+          <span onmouseover="this.style.color='black';" onmouseout="this.style.color='gray';">x</span>
         </div>
-        <div id="transactionForm">
+        <form id="transactionForm">
           <div class="form-group" style="margin-bottom: 12px;">
             <label>Type</label>
-            <select required id="txType">
+            <select required id="tx-type">
               <option value="expense">Expense</option>
               <option value="income">Income</option>
             </select>
           </div>
           <div class="form-group" style="margin-bottom: 12px;">
             <label>Description</label>
-            <input required type="text" id="Description" placeholder="e.g. Amazon, Salary, Coffee">
+            <input required type="text" id="tx-description" placeholder="e.g. Amazon, Salary, Coffee">
           </div>
           <div class="form-row" style="margin-bottom: 12px;">
             <div class="form-group">
               <label>Amount</label>
-              <input required type="number" id="txAmount" step="0.01" min="0">
+              <input required type="number" id="tx-amount" step="0.01" min="0">
             </div>
             <div class="form-group">
               <label>Date</label>
-              <input required type="date" id="txDate">
+              <input required type="date" id="tx-date">
             </div>
           </div>
           <div class="form-group" style="margin-bottom: 12px;">
             <label>Category</label>
-            <select required id="txCategory">
+            <select required id="tx-category">
               <option value disabled selected>Select a category</option>
               <option value="Food & Dining">Food & Dining</option>
               <option value="Shopping">Shopping</option>
@@ -291,7 +276,7 @@
             </select>
           </div>
           <button type="submit">Save Transaction</button>
-        </div>
+        </form>
       </div>
     </div>
 

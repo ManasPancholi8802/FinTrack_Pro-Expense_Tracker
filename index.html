@@ -58,6 +58,7 @@
         const validUser = registeredUsers.find((elem) => elem.username === username && elem.password === password);
         
         if(validUser){
+          localStorage.setItem("currentUser", username);
           window.location.href = "dashboard.html";
           form.reset();
         }else{

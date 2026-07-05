@@ -29,6 +29,20 @@ body {
   flex-direction: column;
 }
 
+.income {
+    color: #026d2b; /* Green */
+}
+.income::before {
+    content: "+";
+}
+
+.expense {
+    color: #a20000; /* Red */
+}
+.expense::before {
+    content: "-";
+}
+
 /* ------------------------------------------------ */
 
 /* LOGIN / REGISTER Pages */

@@ -1,0 +1,205 @@
+// SideBar DOM Selectors
+const dashboardBtn = document.querySelector("#dashboardlnk");
+const settingsBtn = document.querySelector("#settingslnk");
+const addTxBtn = document.querySelector("aside .bottom button");
+const dashboardSection = document.querySelector("#dashboard-section");
+const settingsSection = document.querySelector("#settings-section");
+// Navbar DOM Selectors
+const navUserName = document.querySelector(".navBar #navBar-user");
+const logoutBtn = document.querySelector(".navBar button");
+// Overview Cards DOM Selectors
+const totalTransactions = document.querySelector("#total-transactions")
+const ovBalance = document.querySelector("#crnt-balance")
+const ovIncome = document.querySelector("#total-income")
+const ovExpense = document.querySelector("#total-expnse")
+// Transaction Overlay DOM Selectors
+const txOverlay = document.querySelector("#transactionOverlay");
+const txOverlayClose = document.querySelector("#transactionOverlay .overlay-header span");
+const txForm = document.querySelector("#transactionOverlay form");
+const txOverlayHeader = document.querySelector("#transactionOverlay .overlay-header h3")
+// Table DOM Selectors
+const tableBody = document.querySelector(".table-card table tbody");
+// Dashboard grid DOM Selectors
+const resetBtn = document.querySelector(".side-column button");
+
+
+
+// Global Variables
+let currentUser = localStorage.getItem("currentUser");
+let txArray = JSON.parse(localStorage.getItem("Transactions")) || [];
+let updateIndex = null;
+
+// TOTAL INCOME/EXPENSE
+
+let overview = () => {
+    
+    let totalIncome = 0;
+    let totalExpense = 0;
+
+    txArray.forEach((elem, index) => {
+        if(elem.type === "income"){
+            totalIncome += Number(elem.amount);
+        }else if(elem.type === "expense"){
+            totalExpense += Number(elem.amount);
+        }
+    });
+
+    const balance = totalIncome - totalExpense;
+    ovBalance.textContent = `$ ${balance.toFixed(2)}`;
+    ovIncome.textContent = `$ ${totalIncome.toFixed(2)}`;
+    ovExpense.textContent = `$ ${totalExpense.toFixed(2)}`;
+
+}
+
+// --------------- SIDEBAR -----------------
+
+let showDashboard = () =>{
+    settingsSection.classList.remove("active");
+    dashboardSection.classList.add("active");
+}
+let showSettings = () =>{
+    dashboardSection.classList.remove("active");
+    settingsSection.classList.add("active");
+}
+
+// ------ DASHBOARD ------
+dashboardBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    showDashboard();
+});
+
+
+// ------ SETTINGS -------
+settingsBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    showSettings();
+})
+
+showDashboard();    // Dashboard Visible by default on initial Load
+
+// ------ TRANSACTION FORM OVERLAY ------
+addTxBtn.addEventListener("click", ()=> {
+    txOverlay.classList.add("active");
+});
+
+// Close Overlay
+txOverlayClose.addEventListener("click", () => {
+    txOverlay.classList.remove("active");
+});
+
+// --------------- NAVBAR -----------------
+// Display Current User
+navUserName.innerHTML = currentUser;
+
+// Logout
+logoutBtn.addEventListener("click", ()=> {
+    localStorage.removeItem("currentUser");
+    window.location.href = "index.html";
+});
+
+
+// Tabular UI 
+let tableUi = () => {
+    tableBody.innerHTML = "";
+    txArray.forEach((elem, index) => {
+        const amountClass = elem.type === "income" ? "income" : "expense";
+        tableBody.innerHTML += `<tr>
+                        <td>${elem.date}</td>
+                        <td><strong>${elem.description}</strong></td>
+                        <td><span class="tag">${elem.category}</span></td>
+                        <td class="${amountClass}">${elem.amount}</td>
+                        <td>
+                          <button onClick="updateTransaction('${elem.id}')" class="action-btn btn-edit">
+                            <img src="./icons/edit.png" alt="">
+                          </button>
+                          <button onClick="deleteTransaction('${index}')" class="action-btn btn-delete">
+                            <img src="./icons/Delete.png" alt="">
+                          </button>
+                        </td>
+                      </tr>`;
+    });
+};
+
+tableUi();
+totalTransactions.textContent = txArray.length;
+overview();
+
+// ---------- ADD TRANSACTION -------------
+txForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    
+    let type = event.target[0].value;
+    let description = event.target[1].value;
+    let amount = event.target[2].value;
+    let date = event.target[3].value;
+    let category = event.target[4].value;
+    
+    // Converting Extracted form data into Object Format
+    let txObj = {
+        id: Date.now(),
+        type,
+        description,
+        amount,
+        date,
+        category,
+    } ;
+
+    if(updateIndex !==null){
+        txArray[updateIndex] = txObj;
+        updateIndex = null;
+        localStorage.setItem("Transactions", JSON.stringify(txArray));
+    }else{
+        txArray.push(txObj);
+        localStorage.setItem("Transactions", JSON.stringify(txArray));
+    }    
+
+    tableUi();
+    totalTransactions.textContent = txArray.length;
+    overview();
+
+    txForm.reset();
+    txOverlay.classList.remove("active");
+    
+});
+
+// UPDATE TRANSACTION
+const updateTransaction = (idNum) => {
+    txOverlay.classList.add("active");
+    txOverlayHeader.textContent = "Edit Transaction";
+
+    let transaction = txArray.find((elem) => elem.id == idNum);
+    
+    updateIndex = txArray.findIndex((elem) => elem.id == idNum);
+
+    txForm[0].value = transaction.type    
+    txForm[1].value = transaction.description
+    txForm[2].value = transaction.amount
+    txForm[3].value = transaction.date
+    txForm[4].value = transaction.category
+
+    overview();
+};
+
+// DELETE TRANSACTION
+const deleteTransaction = (index) => {
+    if(confirm("Are you sure you want to delete this transaction?")){
+        txArray.splice(index, 1);
+        localStorage.setItem("Transactions", JSON.stringify(txArray));
+        tableUi();
+        totalTransactions.textContent = txArray.length;
+        overview();
+    }
+    else{};
+};
+
+// RESET ALL DATA
+resetBtn.addEventListener("click", () => {
+    if(confirm("Delete All Transactions?")){
+        txArray=[];
+        localStorage.setItem("Transactions", JSON.stringify(txArray));
+        tableUi();
+        overview();
+        totalTransactions.textContent = txArray.length;
+    }
+    else{};
+})
