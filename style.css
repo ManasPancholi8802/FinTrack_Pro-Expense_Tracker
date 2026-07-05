@@ -16,6 +16,7 @@ html,
 body {
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -30,17 +31,17 @@ body {
 }
 
 .income {
-    color: #026d2b; /* Green */
+  color: #026d2b; /* Green */
 }
 .income::before {
-    content: "+";
+  content: "+";
 }
 
 .expense {
-    color: #a20000; /* Red */
+  color: #a20000; /* Red */
 }
 .expense::before {
-    content: "-";
+  content: "-";
 }
 
 /* ------------------------------------------------ */
@@ -119,7 +120,6 @@ body {
 .app-container {
   display: flex;
   height: 100vh;
-  overflow: hidden;
 }
 
 /* ------- Sidebar -------- */
@@ -232,6 +232,9 @@ aside .logo {
 /* Nav/Header */
 main {
   width: 100%;
+  flex: 1;
+  overflow-y: auto; /* Only main scrolls */
+  height: 100vh;
 }
 
 header {
@@ -577,4 +580,14 @@ select {
   border-radius: 5px;
   background-color: black;
   color: white;
+}
+
+/* -------- GRAPH ----------- */
+.graph-area {
+  height: 300px;
+}
+
+.graph-area canvas {
+  width: 100% !important;
+  height: 100% !important;
 }
