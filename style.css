@@ -24,12 +24,12 @@ body {
 
 /* ------------- CUSTOM CLASSES ------------------- */
 
-.active{
-  display: block !important;
+.active {
+  display: flex !important;
+  flex-direction: column;
 }
 
 /* ------------------------------------------------ */
-
 
 /* LOGIN / REGISTER Pages */
 
@@ -100,18 +100,16 @@ body {
   color: #0056b3;
 }
 
-
-
 /* ------------------- DASHBOARD -------------------------- */
 
-.app-container{
+.app-container {
   display: flex;
   height: 100vh;
   overflow: hidden;
 }
 
 /* ------- Sidebar -------- */
-aside{
+aside {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -123,37 +121,38 @@ aside{
   max-width: 300px;
 }
 
-aside .top, .bottom{
+aside .top,
+.bottom {
   width: 100%;
 }
 
-  /* Logo */
-aside .logo{
+/* Logo */
+aside .logo {
   width: 100%;
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-.logo img{
+.logo img {
   width: 30px;
 }
-  /* Only Visible in Dark Mode */
-.logo img:last-child{
+/* Only Visible in Dark Mode */
+.logo img:last-child {
   display: none;
 }
 
-.logo p{
+.logo p {
   color: grey;
 }
 
-.top{
+.top {
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
-.sidelinks{
+.sidelinks {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -161,15 +160,15 @@ aside .logo{
 
 /* Sidelinks & Icons */
 
-.sidelinks a{
+.sidelinks a {
   text-decoration: none;
 }
 
-.btnicon{
+.btnicon {
   width: 18px;
 }
 
-.sidebar-link{
+.sidebar-link {
   width: 100%;
   background-color: transparent;
   color: gray;
@@ -182,27 +181,27 @@ aside .logo{
   border-radius: 5px;
   transition: 0.2s ease-in-out;
 }
-.sidebar-link:hover{
+.sidebar-link:hover {
   background-color: #dbeafe;
   color: #0056b3;
 }
 
-.sidebar-link svg path{
+.sidebar-link svg path {
   fill: rgb(79, 79, 79) !important;
   transition: fill 0.2s ease-in-out;
 }
 
-.sidebar-link:hover svg path{
+.sidebar-link:hover svg path {
   fill: #003d7e !important;
 }
 
 /* Add Transaction Btn */
-.bottom span{
+.bottom span {
   font-size: large;
   font-weight: normal !important;
 }
 
-.bottom button{
+.bottom button {
   background-color: black;
   color: white;
   font-weight: 500;
@@ -217,12 +216,11 @@ aside .logo{
 /* ------------------ MAIN ------------------------- */
 
 /* Nav/Header */
-main{
+main {
   width: 100%;
-
 }
 
-header{
+header {
   display: flex;
   justify-content: flex-end;
   padding: 16px 32px;
@@ -230,13 +228,13 @@ header{
   border-bottom: 1px solid rgb(214, 214, 214);
 }
 
-header .user-actions{
+header .user-actions {
   display: flex;
   align-items: center;
   gap: 40px;
 }
 
-.user-actions .user-profile{
+.user-actions .user-profile {
   padding-left: 20px;
   border-left: 1px solid rgb(214, 214, 214);
   color: black;
@@ -244,7 +242,7 @@ header .user-actions{
   font-weight: 500;
 }
 
-.user-actions button{
+.user-actions button {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -257,25 +255,25 @@ header .user-actions{
   cursor: pointer;
 }
 
-button svg{
+button svg {
   width: 15px;
 }
 
 /* Main Page Sections */
-.view-section{
+.view-section {
   display: none;
   padding: 30px;
 }
 
-.page-header{
+.page-header {
   margin-bottom: 25px;
 }
 
-.page-header h1{
+.page-header h1 {
   font-weight: 600;
   font-size: 28px !important;
 }
-.page-header p{
+.page-header p {
   color: grey;
   font-size: 14px;
 }
@@ -283,14 +281,14 @@ button svg{
 /* Dashboard Section */
 
 /* Overview Cards */
-.overview-cards{
+.overview-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   margin-bottom: 25px;
 }
 
-.card{
+.card {
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -300,7 +298,7 @@ button svg{
   border-radius: 10px;
 }
 
-.card-icon{
+.card-icon {
   width: 40px;
   height: 40px;
   display: flex;
@@ -310,51 +308,51 @@ button svg{
   border-radius: 10px;
 }
 
-.card-icon img{
+.card-icon img {
   width: 20px;
 }
 
-.card p{
+.card p {
   color: grey;
   font-size: 14px;
 }
 
-.card h3{
+.card h3 {
   font-size: 24px;
 }
 
-.bg-blue{
+.bg-blue {
   background-color: #dbeafe;
 }
-.bg-green{
+.bg-green {
   background-color: #dcfce7;
 }
-.bg-red{
+.bg-red {
   background-color: #fee2e2;
 }
 
-.text-green{
+.text-green {
   color: #166534;
 }
 
-.text-red{
+.text-red {
   color: #991b1b;
 }
 
 /* Dashboard Grid */
-.dashboard-grid{
+.dashboard-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 20px;
 }
 
-.main-column{
+.main-column {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.search-bar{
+.search-bar {
   background-color: #f8f9fb;
   display: flex;
   gap: 5px;
@@ -362,41 +360,42 @@ button svg{
   width: 400px;
 }
 
-.search-bar img{
+.search-bar img {
   width: 20px;
 }
-.search-bar input{
+.search-bar input {
   border: none;
   outline: none;
 }
 
-table{
+table {
   width: 100%;
   border-collapse: collapse;
-} 
+}
 
-table tr{
+table tr {
   border-bottom: 1px solid rgba(202, 202, 202, 0.702);
 }
 
-th{
+th {
   color: gray;
   font-size: smaller;
   text-align: left;
 }
 
-td{
+td {
   font-size: smaller;
 }
 
-td, th {
+td,
+th {
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 15px;
   padding-right: 15px;
 }
 
-.action-btn{
+.action-btn {
   border: none;
   padding: 5px;
   border-radius: 5px;
@@ -405,21 +404,21 @@ td, th {
   transition: 0.2s ease-in-out;
 }
 
-.btn-edit:hover{
+.btn-edit:hover {
   background-color: #dbeafe;
 }
 
-.btn-delete:hover{
+.btn-delete:hover {
   background-color: #fee2e2;
 }
 
-.action-btn img{
+.action-btn img {
   width: 18px;
 }
 
 /* Side-column */
 
-.preference-theme{
+.preference-theme {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -429,41 +428,41 @@ td, th {
 }
 
 .theme-toggle input {
-    display: none;
+  display: none;
 }
 
 .slider {
-    display: inline-block;
-    position: relative;
-    width: 35px;
-    height: 20px;
-    background: #bbb;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
+  display: inline-block;
+  position: relative;
+  width: 35px;
+  height: 20px;
+  background: #bbb;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .slider::before {
-    content: "";
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    left: 3px;
-    top: 3px;
-    background: white;
-    border-radius: 50%;
-    transition: 0.3s;
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  left: 3px;
+  top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
 }
 
 input:checked + .slider {
-    background: #4a90e2;
+  background: #4a90e2;
 }
 
 input:checked + .slider::before {
-    transform: translateX(15px);
+  transform: translateX(15px);
 }
 
-.side-column button{
+.side-column button {
   padding: 5px;
   display: flex;
   align-items: center;
@@ -478,29 +477,27 @@ input:checked + .slider::before {
   cursor: pointer;
 }
 
-.side-column button img{
+.side-column button img {
   width: 18px;
 }
 
-.side-column .card{
+.side-column .card {
   gap: 10px;
 }
 
-
-
-
 /* Settings Section */
-.form-row{
+.form-row {
   display: flex;
   gap: 16px;
   margin-bottom: 40px;
 }
 
-#settingsForm .form-group label{
+#settingsForm .form-group label {
   font-size: 14px;
 }
 
-#settingsForm .form-group input, select{
+#settingsForm .form-group input,
+select {
   padding: 10px;
   border: 1px solid rgba(202, 202, 202, 0.471);
   background-color: #f8f9fb;
@@ -508,7 +505,7 @@ input:checked + .slider::before {
   color: black;
 }
 
-#settingsForm button{
+#settingsForm button {
   padding: 10px 15px;
   background-color: black;
   color: white;
@@ -516,27 +513,19 @@ input:checked + .slider::before {
   border-radius: 5px;
 }
 
-
-
 /* Overlay */
-.transaction-overlay{
-    display: none;
-    position: absolute;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    align-items: center;
-    justify-content: center;
+.transaction-overlay {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-.transaction-overlay.active{
-  display: flex;
-}
-
-.overlay-content{
+.overlay-content {
   background-color: white;
   padding: 24px;
   border-radius: 12px;
@@ -545,29 +534,29 @@ input:checked + .slider::before {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.overlay-header{
+.overlay-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
-.overlay-header span{
+.overlay-header span {
   cursor: pointer;
 }
 
 /* Transaction Form */
-#transactionForm{
+#transactionForm {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-#transactionForm label{
+#transactionForm label {
   font-size: 14px;
   color: rgb(29, 29, 29);
 }
 
-#transactionForm button{
+#transactionForm button {
   width: 100%;
   padding: 10px 15px;
   border: none;
