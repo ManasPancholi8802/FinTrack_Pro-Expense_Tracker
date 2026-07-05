@@ -29,12 +29,21 @@ const searchInput = document.querySelector("#search-Input");
 const filterInput = document.querySelector("#type-filter");
 // Dashboard grid DOM Selectors
 const resetBtn = document.querySelector(".side-column button");
+// Theme toggle
+const themeToggle = document.querySelector("#theme");
 
 // Global Variables
 let currentUser = localStorage.getItem("currentUser");
-let txArray = JSON.parse(localStorage.getItem("Transactions")) || [];
+let txArray =
+  JSON.parse(localStorage.getItem(`Transactions_${currentUser}`)) || [];
 let updateIndex = null;
 let cashFlowChart;
+const savedTheme = localStorage.getItem(`theme_${currentUser}`);
+
+if (savedTheme === "dark") {
+  document.body.classList.add("dark-theme");
+  themeToggle.checked = true;
+}
 
 // Overview Cards
 let overview = () => {
@@ -59,6 +68,10 @@ let overview = () => {
 
 // GRAPH
 let updateChart = (income, expense) => {
+  const styles = getComputedStyle(document.body);
+
+  const gridColor = styles.getPropertyValue("--graph-grid").trim();
+  const textColor = styles.getPropertyValue("--heading-color").trim();
   // Remove Previous Chart
   if (cashFlowChart) {
     cashFlowChart.destroy();
@@ -91,8 +104,26 @@ let updateChart = (income, expense) => {
       },
 
       scales: {
+        x: {
+          ticks: {
+            color: textColor,
+          },
+
+          grid: {
+            color: gridColor,
+          },
+        },
+
         y: {
           beginAtZero: true,
+
+          ticks: {
+            color: textColor,
+          },
+
+          grid: {
+            color: gridColor,
+          },
         },
       },
     },
@@ -193,10 +224,16 @@ txForm.addEventListener("submit", (event) => {
   if (updateIndex !== null) {
     txArray[updateIndex] = txObj;
     updateIndex = null;
-    localStorage.setItem("Transactions", JSON.stringify(txArray));
+    localStorage.setItem(
+      `Transactions_${currentUser}`,
+      JSON.stringify(txArray),
+    );
   } else {
     txArray.push(txObj);
-    localStorage.setItem("Transactions", JSON.stringify(txArray));
+    localStorage.setItem(
+      `Transactions_${currentUser}`,
+      JSON.stringify(txArray),
+    );
   }
 
   tableUi();
@@ -211,7 +248,10 @@ txForm.addEventListener("submit", (event) => {
 resetBtn.addEventListener("click", () => {
   if (confirm("Delete All Transactions?")) {
     txArray = [];
-    localStorage.setItem("Transactions", JSON.stringify(txArray));
+    localStorage.setItem(
+      `Transactions_${currentUser}`,
+      JSON.stringify(txArray),
+    );
     tableUi();
     overview();
     totalTransactions.textContent = txArray.length;
@@ -249,6 +289,19 @@ filterInput.addEventListener("change", () => {
   tableUi(filteredArray);
 });
 
+// THEME TOGGLE
+themeToggle.addEventListener("change", () => {
+  document.body.classList.toggle("dark-theme");
+
+  if (themeToggle.checked) {
+    localStorage.setItem(`theme_${currentUser}`, "dark");
+  } else {
+    localStorage.setItem(`theme_${currentUser}`, "light");
+  }
+  overview();
+
+});
+
 // UPDATE TRANSACTION
 const updateTransaction = (idNum) => {
   txOverlay.classList.add("active");
@@ -272,7 +325,10 @@ const deleteTransaction = (id) => {
   if (confirm("Are you sure you want to delete this transaction?")) {
     const index = txArray.findIndex((elem) => elem.id == id);
     txArray.splice(index, 1);
-    localStorage.setItem("Transactions", JSON.stringify(txArray));
+    localStorage.setItem(
+      `Transactions_${currentUser}`,
+      JSON.stringify(txArray),
+    );
     tableUi();
     totalTransactions.textContent = txArray.length;
     overview();
