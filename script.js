@@ -29,6 +29,10 @@ const searchInput = document.querySelector("#search-Input");
 const filterInput = document.querySelector("#type-filter");
 // Dashboard grid DOM Selectors
 const resetBtn = document.querySelector(".side-column button");
+// Settings Section DOM Selectors
+const settingsForm = document.querySelector("#settingsForm");
+const settingsName = document.querySelector("#settingName");
+const settingsCurrency = document.querySelector("#settingCurrency");
 // Theme toggle
 const themeToggle = document.querySelector("#theme");
 
@@ -38,19 +42,31 @@ let txArray =
   JSON.parse(localStorage.getItem(`Transactions_${currentUser}`)) || [];
 let updateIndex = null;
 let cashFlowChart;
-const savedTheme = localStorage.getItem(`theme_${currentUser}`);
 
+// Getting Current User Theme From LS
+const savedTheme = localStorage.getItem(`theme_${currentUser}`);
 if (savedTheme === "dark") {
   document.body.classList.add("dark-theme");
   themeToggle.checked = true;
 }
 
+// Getting Current User Settings from LS
+const userSettings = JSON.parse(
+  localStorage.getItem(`Settings_${currentUser}`),
+) || {
+  name: currentUser,
+  currency: "$",
+};
+
+settingsName.value = userSettings.name;
+settingsCurrency.value = userSettings.currency;
+
 // Overview Cards
-let overview = () => {
+let overview = (data = txArray) => {
   let totalIncome = 0;
   let totalExpense = 0;
 
-  txArray.forEach((elem, index) => {
+  data.forEach((elem, index) => {
     if (elem.type === "income") {
       totalIncome += Number(elem.amount);
     } else if (elem.type === "expense") {
@@ -59,9 +75,10 @@ let overview = () => {
   });
 
   const balance = totalIncome - totalExpense;
-  ovBalance.textContent = `$${balance.toFixed(2)}`;
-  ovIncome.textContent = `$${totalIncome.toFixed(2)}`;
-  ovExpense.textContent = `$${totalExpense.toFixed(2)}`;
+  const currency = userSettings?.currency || "$"; // If user settings existes --> get currency, else set currency to "$"
+  ovBalance.textContent = `${currency}${balance.toFixed(2)}`;
+  ovIncome.textContent = `${currency}${totalIncome.toFixed(2)}`;
+  ovExpense.textContent = `${currency}${totalExpense.toFixed(2)}`;
 
   updateChart(totalIncome, totalExpense);
 };
@@ -71,7 +88,8 @@ let updateChart = (income, expense) => {
   const styles = getComputedStyle(document.body);
 
   const gridColor = styles.getPropertyValue("--graph-grid").trim();
-  const textColor = styles.getPropertyValue("--heading-color").trim();
+  const textColor = styles.getPropertyValue("--heading").trim();
+  const graphBg = styles.getPropertyValue("--graph-bg").trim();
   // Remove Previous Chart
   if (cashFlowChart) {
     cashFlowChart.destroy();
@@ -86,7 +104,6 @@ let updateChart = (income, expense) => {
           label: "Amount",
           data: [income, expense],
           backgroundColor: ["#026d2b", "#a20000"],
-
           borderRadius: 6,
         },
       ],
@@ -100,30 +117,21 @@ let updateChart = (income, expense) => {
       plugins: {
         legend: {
           display: false,
+          labels: {
+            color: textColor,
+          },
         },
       },
 
       scales: {
         x: {
-          ticks: {
-            color: textColor,
-          },
-
-          grid: {
-            color: gridColor,
-          },
+          ticks: { color: textColor },
+          grid: { color: gridColor },
         },
-
         y: {
           beginAtZero: true,
-
-          ticks: {
-            color: textColor,
-          },
-
-          grid: {
-            color: gridColor,
-          },
+          ticks: { color: textColor },
+          grid: { color: gridColor },
         },
       },
     },
@@ -133,12 +141,18 @@ let updateChart = (income, expense) => {
 // --------------- SIDEBAR -----------------
 
 let showDashboard = () => {
-  settingsSection.classList.remove("active");
-  dashboardSection.classList.add("active");
+  settingsSection.classList.remove("view-active");
+  dashboardSection.classList.add("view-active");
+
+  dashboardBtn.classList.add("active");
+  settingsBtn.classList.remove("active");
 };
 let showSettings = () => {
-  dashboardSection.classList.remove("active");
-  settingsSection.classList.add("active");
+  dashboardSection.classList.remove("view-active");
+  settingsSection.classList.add("view-active");
+
+  settingsBtn.classList.add("active");
+  dashboardBtn.classList.remove("active");
 };
 
 // ------ DASHBOARD ------
@@ -167,7 +181,7 @@ txOverlayClose.addEventListener("click", () => {
 
 // --------------- NAVBAR -----------------
 // Display Current User
-navUserName.innerHTML = currentUser;
+navUserName.textContent = userSettings?.name || currentUser;
 
 // Logout
 logoutBtn.addEventListener("click", () => {
@@ -272,6 +286,7 @@ searchInput.addEventListener("input", () => {
     );
   });
   tableUi(filteredArray);
+  overview(filteredArray);
 });
 
 // FILTER TRANSACTIONS
@@ -280,6 +295,7 @@ filterInput.addEventListener("change", () => {
 
   if (selectedType === "all") {
     tableUi();
+    overview();
     return;
   }
 
@@ -287,6 +303,24 @@ filterInput.addEventListener("change", () => {
     return transaction.type === selectedType;
   });
   tableUi(filteredArray);
+  overview(filteredArray);
+});
+
+// SETTINGS
+settingsForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  userSettings.name = settingsName.value.trim();
+  userSettings.currency = settingsCurrency.value;
+
+  localStorage.setItem(`Settings_${currentUser}`, JSON.stringify(userSettings));
+
+  navUserName.textContent = userSettings.name;
+
+  overview(); // Refresh overview cards
+  tableUi(); // Refresh table if you show currency there
+
+  alert("Settings Saved!");
 });
 
 // THEME TOGGLE
@@ -299,7 +333,6 @@ themeToggle.addEventListener("change", () => {
     localStorage.setItem(`theme_${currentUser}`, "light");
   }
   overview();
-
 });
 
 // UPDATE TRANSACTION
