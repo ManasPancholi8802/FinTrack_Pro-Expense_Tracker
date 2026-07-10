@@ -166,6 +166,10 @@ label {
   content: "-";
 }
 
+.active{
+  display: flex !important;
+}
+
 /* ------------------------------------------------ */
 
 /* LOGIN / REGISTER Pages */
